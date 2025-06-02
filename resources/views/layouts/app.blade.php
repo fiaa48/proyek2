@@ -20,16 +20,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Techfix - Service Laptop & Elektronik</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-[#14B8A6]">
+<body class="bg-[#EAE6DF]">
 
     <!-- Navbar -->
-    <nav class="bg-[#38E4D2] text-black p-4 shadow-md">
+    <nav class="bg-[#A89986] text-black p-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <a href="{{ route('home') }}"class="text-xl font-bold">Techfix</a>
             <ul class="flex space-x-6 items-center">
@@ -46,7 +48,7 @@
                         $unreadCount = $userNotifications->where('is_read', false)->count();
                         $userNotifications = $userNotifications->sortByDesc('created_at'); // Notifikasi terbaru di atas
                     @endphp
-                
+
                     <button class="relative px-4 py-2 rounded-md font-semibold" onclick="document.getElementById('notif-dropdown').classList.toggle('hidden')">
                         🔔
                         @if ($unreadCount > 0)
@@ -55,10 +57,10 @@
                             </span>
                         @endif
                     </button>
-                
+
                     <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg p-4 z-50">
                         <p class="font-bold border-b mb-2 pb-1">Notifikasi</p>
-                
+
                         @if ($unreadCount > 0)
                             <form action="{{ route('notifications.readAll') }}" method="POST" class="mb-2">
                                 @csrf
@@ -66,14 +68,14 @@
                                 <button type="submit" class="text-sm text-blue-500">Baca Semua</button>
                             </form>
                         @endif
-                
+
                         <ul class="space-y-2 max-h-64 overflow-y-auto">
                             @forelse ($userNotifications as $notif)
                                 <li class="border-b pb-2">
                                     <strong class="text-blue-600">{{ $notif->title }}</strong>
                                     <p class="text-sm text-gray-700">{{ $notif->message }}</p>
                                     <small class="text-gray-500">{{ $notif->updated_at->diffForHumans() }}</small>
-                
+
                                     @if (!$notif->is_read)
                                         <form action="{{ route('notifications.read', $notif->id) }}" method="POST" class="mt-1">
                                             @csrf
@@ -90,8 +92,8 @@
                         </ul>
                     </div>
                 </li>
-                
-                                   
+
+
                     <!-- Dropdown Profil -->
                     <li x-data="{ open: false }" class="relative">
                         <button @click="open = !open" class="flex items-center space-x-2 px-4 py-2 rounded-md font-semibold">
@@ -109,7 +111,7 @@
                     </li>
                 @else
                     <li>
-                        <a href="{{ route('login') }}" class="bg-[#E81500] text-white px-4 py-2 rounded-md font-semibold">Masuk</a>
+                        <a href="{{ route('login') }}" class="bg-[#EAE6DF] text-white px-4 py-2 rounded-md font-semibold">Masuk</a>
                     </li>
                 @endauth
             </ul>
@@ -123,7 +125,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-[#000000] text-white py-6 mt-10" style="position: fixed; bottom: 0; width: 100%;">
+    <footer class="bg-[#A89986] text-black py-6 mt-10" style="position: fixed; bottom: 0; width: 100%;">
         <div class="container mx-auto text-center">
             <p class="text-xs">&copy; 2025 - All rights reserved - Techfix</p>
         </div>
@@ -154,7 +156,7 @@
             })
             .catch(error => console.error('Error:', error));
         }
-    
+
         function markAllAsRead() {
             fetch('/notifications/read-all', {
                 method: 'PATCH',
@@ -176,8 +178,7 @@
             .catch(error => console.error('Error:', error));
         }
     </script>
-    
-    
+    @stack('scripts')
 </body>
 </html>
 

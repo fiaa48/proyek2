@@ -1,18 +1,30 @@
-<div class="bg-dark text-white vh-100 p-3" style="width: 250px;">
-    <h4 class="text-center">TechFix Admin</h4>
-    <hr>
-    <ul class="nav flex-column">
-        <li class="nav-item">
-            <a href="{{ route('admin.dashboard') }}" class="nav-link text-white">📊 Dashboard</a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('admin.orders') }}" class="nav-link text-white">🛠 Kelola Pesanan</a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('admin.users') }}" class="nav-link text-white">👥 Data Pengguna</a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('admin.settings') }}" class="nav-link text-white">⚙️ Pengaturan</a>
-        </li>
-    </ul>
-</div>
+<aside class="h-screen w-64 bg-[#A89986] text-black p-5 space-y-6 fixed">
+    <h2 class="text-2xl font-bold">TechFix Admin</h2>
+    <nav class="space-y-2">
+        <a href="{{ route('admin.dashboard') }}" 
+           class="block py-2 px-4 rounded transition-colors duration-200 
+                  @if(Route::is('admin.dashboard')) bg-gray-800 text-white @else hover:bg-gray-700 hover:text-white @endif">
+           Dashboard
+        </a>
+        <a href="{{ route('admin.orders') }}" 
+           class="block py-2 px-4 rounded transition-colors duration-200 
+                  @if(Route::is('admin.orders')) bg-gray-800 text-white @else hover:bg-gray-700 hover:text-white @endif">
+           Data Pesanan
+        </a>
+        <a href="{{ route('admin.catalog') }}" 
+           class="block py-2 px-4 rounded transition-colors duration-200 
+                  @if(Route::is('admin.catalog')) bg-gray-800 text-white @else hover:bg-gray-700 hover:text-white @endif">
+           Data Katalog
+        </a>
+        <a href="{{ route('admin.users') }}" 
+           class="block py-2 px-4 rounded transition-colors duration-200 
+                  @if(Route::is('admin.users')) bg-gray-800 text-white @else hover:bg-gray-700 hover:text-white @endif">
+           Data Pengguna
+        </a>
+        <a href="{{ route('admin.reports') }}" 
+           class="block py-2 px-4 rounded transition-colors duration-200 
+                  @if(Route::is('admin.reports')) bg-gray-800 text-white @else hover:bg-gray-700 hover:text-white @endif">
+           Laporan
+        </a>
+    </nav>
+</aside>

@@ -3,16 +3,7 @@
 @section('content')
     <div class="flex">
         <!-- Sidebar -->
-        <aside class="h-screen w-64 bg-gray-900 text-white p-5 space-y-6 fixed">
-            <h2 class="text-2xl font-bold">TechFix Admin</h2>
-            <nav>
-                <a href="{{ route('admin.dashboard') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Dashboard</a>
-                <a href="{{ route('admin.orders') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Data Pesanan</a>
-                <a href="{{ route('admin.catalog') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Data Katalog</a>
-                <a href="{{ route('admin.users') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Data Pengguna</a>
-                {{-- <a href="{{ route('admin.pembayaran') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Pembayaran</a> --}}
-            </nav>
-        </aside>
+        @include('Admin.sidebar')
 
         <!-- Main Content -->
         <div class="flex-1 ml-64 container mx-auto p-6" x-data="{ openDetail: false, selectedOrder: null }">
@@ -41,69 +32,61 @@
                 </form>
             </div>
             <!-- Tabel Pesanan -->
-            <div class="overflow-x-auto">
-                <table class="w-full border-collapse border border-gray-300">
-                    <thead>
-                        <tr class="bg-gray-200">
-                            <th class="border px-4 py-2">Nama</th>
-                            <th class="border px-4 py-2">Perangkat</th>
-                            <th class="border px-4 py-2">Tanggal</th>
-                            <th class="border px-4 py-2">Total Biaya</th>
-                            <th class="border px-4 py-2">Metode Bayar</th>
-                            <th class="border px-4 py-2">Pembayaran</th>
-                            <th class="border px-4 py-2">Status Pesanan</th>
-                            <th class="border px-4 py-2">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($pesanans as $pesanan)
-                            <tr>
-                                <td class="border px-4 py-2">{{ $pesanan->nama }}</td>
-                                <td class="border px-4 py-2">{{ $pesanan->jenis_barang }}</td>
-                                <td class="border px-4 py-2">{{ $pesanan->tanggal_pemesanan }}</td>
-                                <td class="border px-4 py-2">Rp {{ number_format($pesanan->harga, 0, ',', '.') }}</td>
-                                <td class="border px-4 py-2">{{ $pesanan->metode_pembayaran }}</td>
-                                <td class="border px-4 py-2">
-                                    <span
-                                        class="px-2 py-1 rounded-full text-xs {{ $pesanan->status_pembayaran == 'Lunas' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800' }}">
-                                        {{ $pesanan->status_pembayaran }}
-                                    </span>
-                                </td>
+<div class="overflow-x-auto rounded-lg shadow border border-gray-300 bg-white">
+    <table class="min-w-full text-sm border-collapse border border-gray-300">
+        <thead style="background-color: #EAE6DF; color: #4B453C;">
+            <tr>
+                <th class="px-4 py-3 text-left border border-gray-300">ID</th>
+                <th class="px-4 py-3 text-left border border-gray-300">Nama</th>
+                <th class="px-4 py-3 text-left border border-gray-300">Perangkat</th>
+                <th class="px-4 py-3 text-left border border-gray-300">Tanggal</th>
+                <th class="px-4 py-3 text-left border border-gray-300">Total Biaya</th>
+                <th class="px-4 py-3 text-left border border-gray-300">Metode Bayar</th>
+                <th class="px-4 py-3 text-left border border-gray-300">Pembayaran</th>
+                <th class="px-4 py-3 text-left border border-gray-300">Status Pesanan</th>
+                <th class="px-4 py-3 text-center border border-gray-300">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($pesanans as $pesanan)
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2 whitespace-nowrap border border-gray-300">{{ $pesanan->id }}</td>
+                    <td class="px-4 py-2 whitespace-nowrap border border-gray-300">{{ $pesanan->nama }}</td>
+                    <td class="px-4 py-2 whitespace-nowrap border border-gray-300">{{ $pesanan->jenis_barang }}</td>
+                    <td class="px-4 py-2 whitespace-nowrap border border-gray-300">{{ $pesanan->tanggal_pemesanan }}</td>
+                    <td class="px-4 py-2 whitespace-nowrap border border-gray-300">Rp {{ number_format($pesanan->harga, 0, ',', '.') }}</td>
+                    <td class="px-4 py-2 whitespace-nowrap border border-gray-300">{{ $pesanan->metode_pembayaran }}</td>
+                    <td class="px-4 py-2 whitespace-nowrap border border-gray-300">
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $pesanan->payment != null ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
 
-                                <td class="border px-4 py-2">
-                                    <form action="{{ route('admin.kelola-pesanan', $pesanan->id) }}" method="POST">
-                                        @csrf
-                                        @method('POST')
-                                        <select name="status" class="border rounded px-2 py-1 bg-white"
-                                            onchange="this.form.submit()">
-                                            <option value="Menunggu Konfirmasi Admin"
-                                                {{ $pesanan->status == 'Menunggu Konfirmasi Admin' ? 'selected' : '' }}>
-                                                Menunggu Konfirmasi Admin</option>
-                                            <option value="Diproses"
-                                                {{ $pesanan->status == 'Diproses' ? 'selected' : '' }}>
-                                                Diproses</option>
-                                            <option value="Selesai" {{ $pesanan->status == 'Selesai' ? 'selected' : '' }}>
-                                                Selesai</option>
-                                            <option value="Ditolak" {{ $pesanan->status == 'Ditolak' ? 'selected' : '' }}>
-                                                Ditolak</option>
-                                        </select>
-                                    </form>
-                                </td>
-
-
-                                <td class="border px-4 py-2 text-center">
-                                    <button class="bg-blue-500 text-white px-3 py-1 rounded"
-                                        @click="openDetail = true; selectedOrder = {{ json_encode($pesanan) }}">
-                                        Detail
-                                    </button>
-                                    <a href="{{ route('admin.editHarga', $pesanan->id) }}"
-                                        class="bg-yellow-500 text-white px-3 py-1 rounded">Edit</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                            {{ $pesanan->payment->status_pembayaran ?? 'failed' }}
+                        </span>
+                    </td>
+                    <td class="px-4 py-2 whitespace-nowrap border border-gray-300">
+                        <form action="{{ route('admin.kelola-pesanan', $pesanan->id) }}" method="POST">
+                            @csrf
+                            @method('POST')
+                            <select name="status" class="border rounded px-2 py-1 bg-white text-sm" onchange="this.form.submit()">
+                                <option value="Menunggu Konfirmasi Admin" {{ $pesanan->status == 'Menunggu Konfirmasi Admin' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+                                <option value="Diproses" {{ $pesanan->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                                <option value="Selesai" {{ $pesanan->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                <option value="Ditolak" {{ $pesanan->status == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
+                            </select>
+                        </form>
+                    </td>
+                    <td class="px-4 py-2 whitespace-nowrap text-center border border-gray-300 space-x-1">
+                        <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm"
+                            @click="openDetail = true; selectedOrder = {{ json_encode($pesanan) }}">
+                            Detail
+                        </button>
+                        <a href="{{ route('admin.editHarga', $pesanan->id) }}"
+                            class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 
             <!-- Modal Detail Pesanan -->
             <div x-show="openDetail" x-cloak class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"

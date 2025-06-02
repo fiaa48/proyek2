@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-5xl mx-auto mt-10 p-8 bg-teal-300 rounded-xl shadow-md">
+<div class="max-w-5xl mx-auto mt-10 p-8 rounded-xl shadow-md" style="background-color: #A89986;">
     <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Pesan Jasa Servis</h2>
 
     <form method="POST" action="{{ route('customer.pesanan.store') }}">
@@ -39,10 +39,12 @@
         </div>
 
         <div class="mt-6 text-center">
-            <button type="submit" class="bg-white text-teal-700 font-semibold py-2 px-6 rounded-lg shadow hover:bg-teal-600 hover:text-white transition duration-200">
-                Pesan
-            </button>
-        </div>
+    <button type="submit"
+        style="background-color: #EAE6DF; color: black;"
+        class="font-semibold py-2 px-6 rounded-lg shadow hover:opacity-80 transition duration-200">
+        Pesan
+    </button>
+</div>
     </form>
 </div>
 @endsection

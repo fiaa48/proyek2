@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<aside class="h-screen w-64 bg-gray-900 text-white p-5 space-y-6 fixed">
+<aside style="background-color: #A89986;" class="h-screen w-64 text-black p-5 space-y-6 fixed">
     <h2 class="text-2xl font-bold">TechFix Admin</h2>
     <nav>
         <a href="{{ route('admin.dashboard') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Dashboard</a>
@@ -37,8 +37,14 @@
         </div>
 
         <div class="mb-4">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update Pengguna</button>
-        </div>
+    <button type="submit"
+        class="text-white px-4 py-2 rounded transition duration-200"
+        style="background-color: #A89986;"
+        onmouseover="this.style.backgroundColor='#8B8978'"
+        onmouseout="this.style.backgroundColor='#A89986'">
+        Update Pengguna
+    </button>
+</div>
     </form>
 </div>
 @endsection

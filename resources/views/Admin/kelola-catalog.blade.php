@@ -3,17 +3,7 @@
 @section('content')
     <div class="flex">
         <!-- Sidebar -->
-        <aside class="h-screen w-64 bg-gray-900 text-white p-5 space-y-6 fixed">
-            <h2 class="text-2xl font-bold">TechFix Admin</h2>
-            <nav>
-                <a href="{{ route('admin.dashboard') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Dashboard</a>
-                <a href="{{ route('admin.orders') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Data Pesanan</a>
-                <a href="{{ route('admin.catalog') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Data Katalog</a>
-                <a href="{{ route('admin.users') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Data Pengguna</a>
-                {{-- <a href="{{ route('admin.pembayaran') }}" class="block py-2 px-4 hover:bg-gray-700 rounded">Pembayaran</a> --}}
-            </nav>
-        </aside>
-
+        @include('Admin.sidebar')
         <!-- Main Content -->
         <div class="flex-1 ml-64 container mx-auto p-6" x-data="{ openDetail: false, selectedOrder: null }">
 
@@ -27,16 +17,18 @@
                         class="border px-4 py-2 rounded-lg w-full md:w-1/3">
                 </form>
                 <a href="{{ route('admin.tambahCatalog') }}"
-                    class="bg-blue-700 text-white px-6 py-2 rounded-lg whitespace-nowrap inline-flex items-center justify-center">
-                    Tambah Data
+                class="text-white px-6 py-2 rounded-lg whitespace-nowrap inline-flex items-center justify-center"
+                style="background-color: #A89986;"
+                onmouseover="this.style.backgroundColor='#8B8978'"
+                onmouseout="this.style.backgroundColor='#A89986'">
+                Tambah Data
                 </a>
-
             </div>
             <!-- Tabel Pesanan -->
             <div class="overflow-x-auto">
                 <table class="w-full border-collapse border border-gray-300">
                     <thead>
-                        <tr class="bg-gray-200">
+                        <tr class="bg-[#EAE6DF]">
                             <th class="border px-4 py-2">Nama Barang</th>
                             <th class="border px-4 py-2">Harga</th>
                             <th class="border px-4 py-2">Kategori</th>

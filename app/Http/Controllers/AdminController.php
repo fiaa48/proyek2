@@ -106,7 +106,7 @@ class AdminController extends Controller
 
     public function kelolaPesanan(Request $request)
     {
-        $query = Pesanan::query();
+        $query = Pesanan::with('payment');
 
         // Filter berdasarkan nama
         if ($request->filled('search')) {
@@ -119,7 +119,7 @@ class AdminController extends Controller
         }
 
         $pesanans = $query->get();
-
+// dd($pesanans);
         return view('admin.kelola-pesanan', compact('pesanans'));
     }
     public function kelolaCatalog(Request $request)

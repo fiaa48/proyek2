@@ -1,22 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\PesananController;
-use App\Http\Controllers\FaqController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\NotifikasiController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PesananController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PasswordController;
 
 // Halaman utama
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -36,8 +39,10 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// routes/web.php
+Route::get('/ganti-password', [PasswordController::class, 'showForm'])->name('password.form');
+Route::post('/ganti-password', [PasswordController::class, 'resetPassword'])->name('password.reset');
 
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -63,16 +68,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/order', [OrderController::class, 'store'])->name('customer.order.store');
 
     // Pesanan Customer
+    Route::post('/dashboard/pesanan/{id}', [PembayaranController::class, 'process'])->name('customer.pesanan.checkout');
+    Route::post('dashboard/pesanan/success/{orderId}', [PembayaranController::class, 'success'])->name('payment.success');
+
     Route::get('/dashboard/pesanan', [CustomerController::class, 'pesananIndex'])->name('customer.pesanan.index');
     Route::get('/dashboard/pesanan/{id}', [CustomerController::class, 'pesananDetail'])->name('customer.pesanan.detail');
     Route::post('/dashboard/pesanan', [CustomerController::class, 'storePesanan'])->name('customer.pesanan.store');
     Route::get('/pesanan/create', [CustomerController::class, 'createPesanan'])->name('pesanan.create');
 
-   
+
     Route::patch('/notifications/{id}/read', [NotifikasiController::class, 'markAsRead'])->name('notifications.read');
     Route::patch('/notifications/read-all', [NotifikasiController::class, 'markAllAsRead'])->name('notifications.readAll');
 
-    
+
     // Riwayat Servis
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/riwayat', [CustomerController::class, 'riwayatServis'])->name('riwayat.servis');
@@ -114,7 +122,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/admin/edit-profile', [AdminController::class, 'editProfile'])->name('admin.editProfile');
     Route::put('/admin/update-profile', [AdminController::class, 'updateProfile'])->name('admin.updateProfile');
     Route::delete('/admin/delete-catalog/{id}', [AdminController::class, 'deleteCatalog'])->name('admin.deleteCatalog');
- 
+
     Route::get('/admin/edit-harga/{id}', [AdminController::class, 'editHarga'])->name('admin.editHarga');
     Route::put('/admin/update-harga/{id}', [AdminController::class, 'updateHarga'])->name('admin.updateHarga');
     // File: routes/web.php
@@ -158,4 +166,15 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/review/{orderId}/create', [ReviewController::class, 'create'])->name('review.create');
     Route::post('/review/{orderId}', [ReviewController::class, 'store'])->name('review.store');
+});
+
+Route::prefix('admin/reports')->group(function () {
+    Route::get('/', [ReportController::class, 'index'])->name('admin.reports');
+    Route::get('/export-excel', [ReportController::class, 'exportExcel'])->name('admin.reports.export.excel');
+    Route::get('/export-pdf', [ReportController::class, 'exportPdf'])->name('admin.reports.export.pdf');
+});
+Route::prefix('invoices')->group(function () {
+    Route::get('/{payment}', [InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/{payment}/download', [InvoiceController::class, 'download'])->name('invoices.download');
+    Route::get('/{payment}/print', [InvoiceController::class, 'print'])->name('invoices.print');
 });

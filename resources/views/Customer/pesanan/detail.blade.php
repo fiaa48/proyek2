@@ -6,8 +6,8 @@
 
         <table class="table-auto w-full border-collapse border border-gray-300 pb-5">
             <thead>
-                <tr class="bg-gray-100">
-                    <th class="border border-gray-300 px-6 py-3">#ID Pesanan</th>
+                <tr style="background-color: #EAE6DF;">
+                    <th class="border border-gray-300 px-6 py-3">ID Pesanan</th>
                     <th class="border border-gray-300 px-6 py-3">Layanan/Barang</th>
                     <th class="border border-gray-300 px-6 py-3">Deskripsi Kerusakan</th>
                     <th class="border border-gray-300 px-6 py-3">Tanggal Pemesanan</th>
@@ -40,14 +40,19 @@
                         <td class="border px-2 py-2 text-start">
                             Rp {{ number_format($pesanan->harga, 0, ',', '.') }}
 
-                            @if (!is_null($pesanan->harga))
-                                <form action="" method="POST" class="mt-2">
-                                    @csrf
-                                    <button type="submit"
-                                        class="bg-green-500 text-white text-sm px-3 py-1 rounded hover:bg-green-600">
-                                        Bayar Sekarang
-                                    </button>
-                                </form>
+                            @if (!is_null($pesanan->payment))
+                            <a href="{{ route('invoices.download', $pesanan->payment->id) }}"
+                                    class="bg-green-500 text-white text-sm px-3 py-1 rounded hover:bg-green-600 mt-2">
+                                    Invoice
+                                </a>
+                            @elseif (is_null($pesanan->payment) && $pesanan->harga>0)
+                            <button onclick="payNow({{ $pesanan->id }})"
+                                    class="bg-red-500 text-white text-sm px-3 py-1 rounded hover:bg-red-600 mt-2">
+                                    Bayar Sekarang
+                                </button>
+                            @else
+                            
+                                
                             @endif
                         </td>
                         <td class="border border-gray-300 px-6 py-3 text-center">
@@ -86,3 +91,78 @@
         </table>
     </div>
 @endsection
+@push('scripts')
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+    <script>
+        function payNow(orderId) {
+            fetch(`/dashboard/pesanan/${orderId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.snap_token) {
+                        window.snap.pay(data.snap_token, {
+                            onSuccess: function(result) {
+                                alert("Pembayaran berhasil!");
+                                fetch(`/dashboard/pesanan/success/${orderId}`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': document.querySelector(
+                                                'meta[name="csrf-token"]').getAttribute('content')
+                                        },
+                                        body: JSON.stringify({
+                                            pesanan_id: orderId,
+                                            metode_pembayaran: 'midtrans',
+                                            total_bayar: result.gross_amount
+                                        })
+                                    })
+                                    .then(async (res) => {
+                                        const text = await res.text();
+                                        try {
+                                            const data = JSON.parse(text);
+                                            console.log('✅ Data pembayaran berhasil disimpan:',
+                                            data);
+                                            window.location.reload();
+                                            // alert("Data pembayaran berhasil disimpan.");
+                                            // location.reload();
+                                        } catch (e) {
+                                            console.error(
+                                                '❌ Gagal parse JSON. Mungkin respons HTML:',
+                                                text);
+                                            alert("Terjadi kesalahan saat menyimpan pembayaran.");
+                                        }
+                                    })
+                                    .catch(error => {
+                                        alert("Gagal menyimpan data pembayaran.");
+                                        console.error('Error:', error);
+                                    });
+
+                            },
+                            onPending: function(result) {
+                                alert("Menunggu pembayaran...");
+                            },
+                            onError: function(result) {
+                                alert("Pembayaran gagal!");
+                            },
+                            onClose: function() {
+                                console.log("Popup ditutup.");
+                            }
+                        });
+
+                    } else {
+                        alert("Gagal mendapatkan token pembayaran");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Terjadi kesalahan saat memproses pembayaran.");
+                });
+        }
+    </script>
+@endpush

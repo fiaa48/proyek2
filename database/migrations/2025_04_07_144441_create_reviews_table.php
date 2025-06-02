@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('pesanan_id')->constrained()->onDelete('cascade');
-            $table->tinyInteger('rating'); // 1-5
+
+            // pastikan tabel 'users' dan 'pesanans' sudah ada sebelum migrasi ini dijalankan
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('pesanan_id')->constrained('pesanans')->onDelete('cascade');
+
+            $table->tinyInteger('rating'); // nilai rating dari 1-5
             $table->text('comment')->nullable();
+
             $table->timestamps();
         });
     }

@@ -6,13 +6,13 @@
 
     body {
         font-family: 'Poppins', sans-serif;
-        background-color: #E0F2F1;
+        background-color: #EAE6DF;
         margin: 0;
         padding: 0;
     }
 
     .navbar {
-        background-color: #00796B;
+        background-color: #A89986;
         color: white;
         font-size: 18px;
         display: flex;
@@ -79,7 +79,7 @@
     }
 
     .hero-section {
-        background: #38E4D2;
+        background: #A89986;
         color: black;
         padding: 50px;
         border-radius: 10px;
@@ -97,14 +97,14 @@
 
     .service-info {
         padding: 20px;
-        background: #E0F2F1;
+        background: #EAE6DF;
         border-radius: 10px;
         margin-top: 20px;
     }
 
     .notif-box {
-        background-color: #fff3cd;
-        color: #856404;
+        background-color: #EAE6DF;
+        color: #A89986;
         padding: 12px;
         border-radius: 8px;
         margin: 20px auto 0 auto;
@@ -143,26 +143,74 @@
     @endif
 @endforeach
 
-<!-- Konten Utama -->
 <div class="container2">
     <div class="hero-section">
-        <h1>Service Laptop, Printer, dan Komputer Terbaik di Kota Indramayu</h1>
-        <p>Panggil TechFix untuk layanan terbaik di kota Anda. Kami siap membantu dengan gratis antar jemput dan pembayaran setelah servis selesai.</p>
-        <a href="{{ route('pesanan.create') }}" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-5 rounded-lg mt-4 inline-block transition duration-300">Mau Servis</a>
+        <h1>Service Laptop, Printer & Komputer Terbaik di Kota Indramayu</h1>
+        <p>TechFix memberikan layanan perbaikan professional dengan gratis antar<br>jemput. Percayakan parangkat elektronik Anda kepada kami.</p>
+        <a href="{{ route('pesanan.create') }}" style="background-color: #EAE6DF;" class="text-black font-semibold py-2 px-5 rounded-lg mt-4 inline-block transition duration-300 hover:opacity-80">
+            Buat Pesanan Servis
+        </a>
     </div>
 
     <div class="service-info text-left mt-6">
-        <h3 class="font-semibold text-lg mb-2">Jenis Layanan</h3>
-        <ul class="list-disc list-inside">
-            <li>Service Laptop</li>
-            <li>Service Printer</li>
-            <li>Service Komputer</li>
-            <li>AC</li>
-            <li>Kipas Angin</li></li>
-            <li>Dan Barang Elektronik Lainnya</li>
-        </ul>
+        <h3 class="font-semibold text-lg mb-2">Layanan Kami</h3>
+        <div class="services-grid">
+            <div class="service-item">
+                <h4>Service Laptop</h4>
+                <p>Perbaikan hardware &<br>software untuk berbagai jenis laptop<br>laptop</p>
+            </div>
+            <div class="service-item">
+                <h4>Service Printer</h4>
+                <p>Perbaikan printer berbagai merek dan jenis<br>termasuk penggantian sparepart<br>motifs</p>
+            </div>
+            <div class="service-item">
+                <h4>Service Komputer</h4>
+                <p>Perbaikan sistem operasi for upgrade hardware<br>dan troubleshooting umum</p>
+            </div>
+            <div class="service-item">
+                <h4>Service AC</h4>
+                <p>Pembersihan, isi ulang freon, dan perbaikan unit<br>AC rumah/kantor</p>
+            </div>
+            <div class="service-item">
+                <h4>Service Kipas Angin</h4>
+                <p>Perbaikan kipas angin mati<br>berisik, atau tidak berputar dengan baik</p>
+            </div>
+            <div class="service-item">
+                <h4>Elektronik lainnya</h4>
+                <p>Perbaikan berbagai parangkat<br>elektronik rumah tangga</p>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    /* Tambahkan style ini */
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .service-item {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .service-item h4 {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        color: #2c3e50;
+    }
+    
+    .service-item p {
+        margin: 0;
+        font-size: 14px;
+        color: #666;
+        line-height: 1.4;
+    }
+</style>
 
 <!-- Sidebar Toggle Script -->
 <script>

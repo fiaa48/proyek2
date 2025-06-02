@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             'name' => 'Admin Techfix',
             'email' => 'admin@techfix.com',
             'password' => Hash::make('admin123'),
-            'role' => 'admin',
+            'role' => 'user',
         ]);
 
         User::create([

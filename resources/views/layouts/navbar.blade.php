@@ -1,4 +1,4 @@
-<nav class="bg-white shadow-md p-4 flex justify-between items-center">
+<nav style="background-color: #A89986;" class="shadow-md p-4 flex justify-between items-center">
     <div class="text-2xl font-bold text-gray-800">TechFix Admin</div>
 
     <!-- Search Bar -->

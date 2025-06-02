@@ -20,9 +20,9 @@
     </script>
 </head>
 
-<body class="bg-[#00000] min-h-screen flex flex-col justify-between">
+<body class="bg-[#EAE6DF] min-h-screen flex flex-col justify-between">
     <!-- Navbar -->
-    <nav class="bg-[#38E4D2] py-4 px-6 flex justify-between items-center relative">
+    <nav class="bg-[#A89986] py-4 px-6 flex justify-between items-center relative">
         <h1 class="text-black text-2xl font-bold">Techfix</h1>
         <div class="flex space-x-6 items-center">
             <a href="{{ route('home') }}" class="text-black font-medium">Home</a>
@@ -46,7 +46,7 @@
             <a href="https://wa.me/083148140002?text=Halo%2C%20saya%20tertarik%20dengan%20aplikasi%20tabungan%20sekolahnya."
                 target="_blank" class="text-black font-medium">Kontak</a>
             <a href="{{ route('login') }}"
-                class="bg-[#E81500] text-black px-4 py-2 rounded-lg font-semibold shadow-md hover:bg-[#C11200]">Masuk</a>
+                class="bg-[#EAE6DF] text-black px-4 py-2 rounded-lg font-semibold shadow-md hover:bg-[#EAE6DF]">Masuk</a>
         </div>
     </nav>
 
@@ -68,21 +68,17 @@
                             <h3 class="font-semibold text-lg mb-2">{{ $item->nama_barang }}</h3>
                             <p class="text-gray-700 mb-2">Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
                             <a href="{{ $item->link }}" target="_blank"
-                                class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                                Beli / Kunjungi
-                            </a>
+                            style="background-color: #A89986;"class="inline-block text-white px-4 py-2 rounded hover:opacity-80 transition">Beli / Kunjungi</a>
                         </div>
                     </div>
                 @endforeach
-
             </div>
         </div>
-
     </div>
 
 
     <!-- Footer -->
-    <footer class="bg-[#14B8A6] text-black py-10 px-6 mt-10">
+    <footer class="bg-[#A89986] text-black py-10 px-6 mt-10">
         <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 text-center md:text-left">
             <div>
                 <h3 class="text-lg font-semibold text-black-400">Techfix</h3>
@@ -135,5 +131,4 @@
         });
     </script>
 </body>
-
 </html>

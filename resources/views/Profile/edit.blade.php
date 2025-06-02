@@ -65,9 +65,13 @@
                 </div>
 
                 <!-- Tombol Submit -->
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg w-full transition duration-200">
-                    Simpan Perubahan
-                </button>
+                <button type="submit"
+    class="text-black px-4 py-2 rounded-lg w-full transition duration-200"
+    style="background-color: #A89986;"
+    onmouseover="this.style.backgroundColor='#8B8978'"
+    onmouseout="this.style.backgroundColor='#A89986'">
+    Simpan Perubahan
+</button>
             </form>
         </div>
     </div>
